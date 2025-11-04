@@ -3,9 +3,9 @@ import requests
 
 app = Flask(__name__)
 
-LYRICS_URL = "http://lyrics_service:5001"
-HOTEL_URL = "http://hotel_service:5002"
-CAR_URL = "http://car_service:5003"
+LYRICS_URL = "http://lyrics-service:5001"
+HOTEL_URL = "http://hotel-service:5002"
+CAR_URL = "http://car-service:5003"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -41,7 +41,7 @@ def book_trip():
         if "hotel" in successful_steps:
             requests.post(f"{HOTEL_URL}/cancel", json={"user": user})
         if "lyrics" in successful_steps:
-            requests.post(f"{LYRICS_URL}/cancel", json={"user": user})
+            requests.post(f"{LYRICS_URL}/erase", json={"user": user})
         return jsonify({"message": f"Error en la reserva para {user}. Se ejecutaron compensaciones."}), 500
 
 if __name__ == '__main__':

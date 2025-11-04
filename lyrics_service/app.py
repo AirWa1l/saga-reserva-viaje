@@ -19,9 +19,10 @@ def escribir_cancion():
         "lyrics": lyrics
     }
     liricas.append(lirica)
-    return jsonify({"message": f"Letra creada para {user}", "data": letra}), 200
+    return jsonify({"message": f"Letra creada para {user}", "data": lirica}), 200
 
 @app.route('/erase', methods=['POST'])
+@app.route('/cancel', methods=['POST'])
 def borrar_letra():
     data = request.json
     user = data.get('user')
