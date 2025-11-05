@@ -14,11 +14,11 @@ spec:
         app: lyrics-service
     spec:
       containers:
-      - name: lyrics-service
-        image: lyrics-service:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 5001
+        - name: lyrics-service
+          image: lyrics-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5001
 ---
 apiVersion: v1
 kind: Service
@@ -28,60 +28,60 @@ spec:
   selector:
     app: lyrics-service
   ports:
-  - protocol: TCP
-    port: 5001
-    targetPort: 5001
+    - protocol: TCP
+      port: 5001
+      targetPort: 5001
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hotel-service
+  name: composition-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hotel-service
+      app: composition-service
   template:
     metadata:
       labels:
-        app: hotel-service
+        app: composition-service
     spec:
       containers:
-      - name: hotel-service
-        image: hotel-service:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 5002
+        - name: composition-service
+          image: composition-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5002
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hotel-service
+  name: composition-service
 spec:
   selector:
-    app: hotel-service
+    app: composition-service
   ports:
-  - protocol: TCP
-    port: 5002
-    targetPort: 5002
+    - protocol: TCP
+      port: 5002
+      targetPort: 5002
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: car-service
+  name: analytics-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: car-service
+      app: analytics-service
   template:
     metadata:
       labels:
-        app: car-service
+        app: analytics-service
     spec:
       containers:
-      - name: car-service
-        image: car-service:latest
+      - name: analytics-service
+        image: analytics-service:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 5003
@@ -89,14 +89,113 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: car-service
+  name: analytics-service
 spec:
   selector:
-    app: car-service
+    app: analytics-service
+  ports:
+    - protocol: TCP
+      port: 5003
+      targetPort: 5003
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delete-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delete-service
+  template:
+    metadata:
+      labels:
+        app: delete-service
+    spec:
+      containers:
+        - name: delete-service
+          image: delete-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5006
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: delete-service
+spec:
+  selector:
+    app: delete-service
+  ports:
+    - protocol: TCP
+      port: 5006
+      targetPort: 5006
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vocal-recording-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vocal-recording-service
+  template:
+    metadata:
+      labels:
+        app: vocal-recording-service
+    spec:
+      containers:
+      - name: vocal-recording-service
+        image: vocal-recording-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5005
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vocal-recording-service
+spec:
+  selector:
+    app: vocal-recording-service
   ports:
   - protocol: TCP
-    port: 5003
-    targetPort: 5003
+    port: 5005
+    targetPort: 5005
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: digital-delivery-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: digital-delivery-service
+  template:
+    metadata:
+      labels:
+        app: digital-delivery-service
+    spec:
+      containers:
+      - name: digital-delivery-service
+        image: digital-delivery-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5009
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: digital-delivery-service
+spec:
+  selector:
+    app: digital-delivery-service
+  ports:
+  - protocol: TCP
+    port: 5009
+    targetPort: 5009
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -146,11 +245,11 @@ spec:
         app: orchestrator
     spec:
       containers:
-      - name: orchestrator
-        image: orchestrator:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 5000
+        - name: orchestrator
+          image: orchestrator:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
@@ -161,7 +260,7 @@ spec:
   selector:
     app: orchestrator
   ports:
-  - protocol: TCP
-    port: 5000
-    targetPort: 5000
-    nodePort: 30000
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30000
