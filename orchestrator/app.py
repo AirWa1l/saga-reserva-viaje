@@ -6,6 +6,7 @@ app = Flask(__name__)
 LYRICS_URL = "http://lyrics-service:5001"
 HOTEL_URL = "http://hotel-service:5002"
 CAR_URL = "http://car-service:5003"
+VOCAL_RECORDING_URL = "http://vocal-recording-service:5005"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
