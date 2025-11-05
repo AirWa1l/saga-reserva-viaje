@@ -27,4 +27,5 @@ docker build -t mastering-service:latest ./mastering_service
 # docker rmi orchestrator:latest
 # docker rmi delete-service:latest
 # docker rmi digital-delivery-service:latest
+# docker rmi vocal-recording-service:latest
 # docker rmi mastering-service:latest

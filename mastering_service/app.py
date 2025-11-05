@@ -81,7 +81,7 @@ def obtener_voces(user: str):
     try:
         # Si estás en Kubernetes → usa el nombre del servicio: voice-service
         # Si estás local → usa localhost:5005
-        response = requests.get("http://voice-service:5005/voices")
+        response = requests.get("http://vocal-recording-service:5005/voices")
 
         if response.status_code == 200:
             voces = response.json()
