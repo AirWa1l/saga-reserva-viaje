@@ -1,6 +1,6 @@
 docker build -t orchestrator:latest ./orchestrator
 docker build -t lyrics-service:latest ./lyrics_service
-docker build -t hotel-service:latest ./hotel_service
+docker build -t composition-service:latest ./composition_service  
 docker build -t car-service:latest ./car_service
 
 # kubectl apply -f .\k8s.yaml
@@ -11,11 +11,12 @@ docker build -t car-service:latest ./car_service
 # kubectl port-forward svc/lyrics-service 5001:5001
 # kubectl port-forward svc/composition-service 5002:5002
 
+
 # kubectl delete -f .\k8s.yaml
 # kubectl get all
 
 # Eliminar imagenes construidas
 # docker rmi lyrics-service:latest
-# docker rmi hotel-service:latest
+# docker rmi composition-service:latest
 # docker rmi car-service:latest
 # docker rmi orchestrator:latest
