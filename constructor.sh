@@ -5,6 +5,7 @@ docker build -t analytics-service:latest ./analytics_service
 docker build -t delete-service:latest ./delete_service
 docker build -t digital-delivery-service:latest ./digital_delivery_service
 docker build -t vocal-recording-service:latest ./vocal_recording_service
+docker build -t mixing-service:latest ./mixing_service
 docker build -t mastering-service:latest ./mastering_service
 docker build -t emotional-refund-service:latest ./emotional_refund_service
 
@@ -30,4 +31,5 @@ docker build -t emotional-refund-service:latest ./emotional_refund_service
 # docker rmi delete-service:latest
 # docker rmi digital-delivery-service:latest
 # docker rmi vocal-recording-service:latest
+# docker rmi mixing-service:latest
 # docker rmi mastering-service:latest

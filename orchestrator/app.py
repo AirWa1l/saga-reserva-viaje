@@ -10,6 +10,8 @@ DELETE_URL = "http://delete-service:5006"
 DIGITAL_DELIVERY_URL = "http://digital-delivery-service:5009"
 MASTERING_URL = "http://mastering-service:5010"
 VOCAL_RECORDING_URL = "http://vocal-recording-service:5005"
+MIXING_SERVICE_URL = "http://mixing-service:5007"
+
 EMOTIONAL_REFUND_URL = "http://emotional-refund-service:5004"
 
 @app.route('/music', methods=['POST'])
@@ -59,6 +61,11 @@ def book_trip():
             raise Exception("Error al grabar la voz")
         successful_steps.append("vocal_recording")
 
+        # Mezcla de sonido
+        res = requests.post(f"{MIXING_SERVICE_URL}/record", json={"user": user})
+        if res.status_code != 200:
+            raise Exception("Error al grabar la voz")
+        successful_steps.append("vocal_recording")
         res = requests.post(f"{EMOTIONAL_REFUND_URL}/write", json={"user": user}) 
         if res.status_code != 200:
             raise Exception("Error en el reembolso emocional")
@@ -82,6 +89,10 @@ def book_trip():
             requests.post(f"{DIGITAL_DELIVERY_URL}/cancel", json={"user": user})
         if "vocal_recording" in successful_steps:
             requests.post(f"{VOCAL_RECORDING_URL}/cancel", json={"user": user})
+        if "mixing" in successful_steps:
+            requests.post(f"{MIXING_SERVICE_URL}/cancel", json={"user": user})
+        
+
         if "mastering" in successful_steps:
             requests.post(f"{MASTERING_URL}/cancel", json={"user": user})
         if "emotional_refund" in successful_steps:
