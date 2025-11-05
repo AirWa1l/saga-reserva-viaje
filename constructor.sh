@@ -29,4 +29,5 @@ docker build -t emotional-refund-service:latest ./emotional_refund_service
 # docker rmi orchestrator:latest
 # docker rmi delete-service:latest
 # docker rmi digital-delivery-service:latest
+# docker rmi vocal-recording-service:latest
 # docker rmi mastering-service:latest
