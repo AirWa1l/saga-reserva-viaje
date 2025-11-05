@@ -9,6 +9,8 @@ ANALYTICS_URL = "http://analytics-service:5003"
 DELETE_URL = "http://delete-service:5006"
 DIGITAL_DELIVERY_URL = "http://digital-delivery-service:5009"
 VOCAL_RECORDING_URL = "http://vocal-recording-service:5005"
+MIXING_SERVICE_URL = "http://mixing-service:5007"
+
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -52,6 +54,12 @@ def book_trip():
             raise Exception("Error al grabar la voz")
         successful_steps.append("vocal_recording")
 
+        # Mezcla de sonido
+        res = requests.post(f"{MIXING_SERVICE_URL}/record", json={"user": user})
+        if res.status_code != 200:
+            raise Exception("Error al grabar la voz")
+        successful_steps.append("vocal_recording")
+
         return jsonify({"message": f"Obtenido las grabaciones de {user}"}), 200
         
 
@@ -70,6 +78,10 @@ def book_trip():
             requests.post(f"{DIGITAL_DELIVERY_URL}/cancel", json={"user": user})
         if "vocal_recording" in successful_steps:
             requests.post(f"{VOCAL_RECORDING_URL}/cancel", json={"user": user})
+        if "mixing" in successful_steps:
+            requests.post(f"{MIXING_SERVICE_URL}/cancel", json={"user": user})
+        
+
         return jsonify({"message": f"Revision de letras borradas de {user}."}), 500
 
 if __name__ == '__main__':
