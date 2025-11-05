@@ -6,6 +6,7 @@ app = Flask(__name__)
 LYRICS_URL = "http://lyrics-service:5001"
 HOTEL_URL = "http://hotel-service:5002"
 CAR_URL = "http://car-service:5003"
+EMOTIONAL_REFUND_URL = "http://emotional-refund-service:5004"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -31,6 +32,13 @@ def book_trip():
             raise Exception("Error en carro")
         successful_steps.append("car")
 
+        #emotional_refund
+
+        res = requests.post(f"{EMOTIONAL_REFUND_URL}/write", json={"user": user}) 
+        if res.status_code != 200:
+            raise Exception("Error en el reembolso emocional")
+        successful_steps.append("emotional_refund")
+
         return jsonify({"message": f"Reserva completada para {user}"}), 200
 
     except Exception as e:
@@ -42,6 +50,8 @@ def book_trip():
             requests.post(f"{HOTEL_URL}/cancel", json={"user": user})
         if "lyrics" in successful_steps:
             requests.post(f"{LYRICS_URL}/erase", json={"user": user})
+        if "emotional_refund" in successful_steps:
+            requests.post(f"{EMOTIONAL_REFUND_URL}/erase", json={"user": user})
         return jsonify({"message": f"Error en la reserva para {user}. Se ejecutaron compensaciones."}), 500
 
 if __name__ == '__main__':
