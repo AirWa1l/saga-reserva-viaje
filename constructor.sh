@@ -4,6 +4,7 @@ docker build -t composition-service:latest ./composition_service
 docker build -t analytics-service:latest ./analytics_service
 docker build -t delete-service:latest ./delete_service
 docker build -t digital-delivery-service:latest ./digital_delivery_service
+docker build -t vocal-recording-service:latest ./vocal_recording_service
 docker build -t mastering-service:latest ./mastering_service
 
 # kubectl apply -f .\k8s.yaml

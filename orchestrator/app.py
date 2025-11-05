@@ -9,6 +9,7 @@ ANALYTICS_URL = "http://analytics-service:5003"
 DELETE_URL = "http://delete-service:5006"
 DIGITAL_DELIVERY_URL = "http://digital-delivery-service:5009"
 MASTERING_URL = "http://mastering-service:5010"
+VOCAL_RECORDING_URL = "http://vocal-recording-service:5005"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -41,6 +42,7 @@ def book_trip():
             raise Exception("Error al borrar la cancion")
         successful_steps.append("delete")
 
+        # Entrega digital
         res = requests.post(f"{DIGITAL_DELIVERY_URL}/deliver", json={"user": user})
         if res.status_code != 200:
             raise Exception("Error al entregar la cancion")
@@ -53,7 +55,13 @@ def book_trip():
             raise Exception("Error al masterizar el track mezclado")
         successful_steps.append("mastering")
 
-        return jsonify({"message": f"Obtenido las letras de {user}"}), 200
+        # Grabar voz
+        res = requests.post(f"{VOCAL_RECORDING_URL}/record", json={"user": user})
+        if res.status_code != 200:
+            raise Exception("Error al grabar la voz")
+        successful_steps.append("vocal_recording")
+
+        return jsonify({"message": f"Obtenido las grabaciones de {user}"}), 200
         
 
     except Exception as e:
@@ -69,6 +77,8 @@ def book_trip():
             requests.post(f"{DELETE_URL}/cancel", json={"user": user})
         if "digital_delivery" in successful_steps:
             requests.post(f"{DIGITAL_DELIVERY_URL}/cancel", json={"user": user})
+        if "vocal_recording" in successful_steps:
+            requests.post(f"{VOCAL_RECORDING_URL}/cancel", json={"user": user})
         return jsonify({"message": f"Revision de letras borradas de {user}."}), 500
 
 if __name__ == '__main__':
