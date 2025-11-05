@@ -4,6 +4,7 @@ docker build -t composition-service:latest ./composition_service
 docker build -t analytics-service:latest ./analytics_service
 docker build -t delete-service:latest ./delete_service
 docker build -t digital-delivery-service:latest ./digital_delivery_service
+docker build -t vocal-recording-service:latest ./vocal_recording_service
 
 # kubectl apply -f .\k8s.yaml
 # kubectl get pods 
@@ -24,3 +25,4 @@ docker build -t digital-delivery-service:latest ./digital_delivery_service
 # docker rmi orchestrator:latest
 # docker rmi delete-service:latest
 # docker rmi digital-delivery-service:latest
+# docker rmi vocal-recording-service:latest
