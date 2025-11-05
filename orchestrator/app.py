@@ -6,10 +6,12 @@ app = Flask(__name__)
 LYRICS_URL = "http://lyrics-service:5001"
 HOTEL_URL = "http://hotel-service:5002"
 CAR_URL = "http://car-service:5003"
+MASTERING_URL = "http://mastering-service:5010"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
     user = request.json.get('user')
+    track = "track"
     successful_steps = []
 
     try:
@@ -30,6 +32,11 @@ def book_trip():
         if res.status_code != 200:
             raise Exception("Error en carro")
         successful_steps.append("car")
+
+        res = requests.post(f"{MASTERING_URL}/write", json={"user": user,"track": track})
+        if res.status_code != 200:
+            raise Exception("Error al masterizar el track mezclado")
+        successful_steps.append("mastering")
 
         return jsonify({"message": f"Reserva completada para {user}"}), 200
 
