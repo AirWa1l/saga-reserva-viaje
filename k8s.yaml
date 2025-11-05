@@ -245,6 +245,39 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: emotional-refund-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emotional-refund-service
+  template:
+    metadata:
+      labels:
+        app: emotional-refund-service
+    spec:
+      containers:
+      - name: emotional-refund-service
+        image: emotional-refund-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5004
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emotional-refund-service
+spec:
+  selector:
+    app: emotional-refund-service
+  ports:
+  - protocol: TCP
+    port: 5004
+    targetPort: 5004
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: orchestrator
 spec:
   replicas: 1
