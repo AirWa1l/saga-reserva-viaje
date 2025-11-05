@@ -11,7 +11,7 @@ apologies = []
 def receive_lyrics():
     try:
         # Suponemos que el lyrics_service corre en el puerto 5001
-        response = requests.get("http://lyrics_service:5001/lyrics")
+        response = requests.get("http://lyrics-service:5001/lyrics")
         if response.status_code == 200:
             lyrics_data = response.json()
             return jsonify({"message": "Letras recibidas exitosamente", "data": lyrics_data}), 200
