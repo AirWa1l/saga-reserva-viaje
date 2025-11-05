@@ -6,6 +6,7 @@ docker build -t delete-service:latest ./delete_service
 docker build -t digital-delivery-service:latest ./digital_delivery_service
 docker build -t vocal-recording-service:latest ./vocal_recording_service
 docker build -t mixing-service:latest ./mixing_service
+docker build -t emotional-refund-service:latest ./emotional_refund_service
 
 # kubectl apply -f .\k8s.yaml
 # kubectl get pods 

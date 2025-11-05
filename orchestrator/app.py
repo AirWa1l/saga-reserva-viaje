@@ -11,6 +11,7 @@ DIGITAL_DELIVERY_URL = "http://digital-delivery-service:5009"
 VOCAL_RECORDING_URL = "http://vocal-recording-service:5005"
 MIXING_SERVICE_URL = "http://mixing-service:5007"
 
+EMOTIONAL_REFUND_URL = "http://emotional-refund-service:5004"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -59,6 +60,10 @@ def book_trip():
         if res.status_code != 200:
             raise Exception("Error al grabar la voz")
         successful_steps.append("vocal_recording")
+        res = requests.post(f"{EMOTIONAL_REFUND_URL}/write", json={"user": user}) 
+        if res.status_code != 200:
+            raise Exception("Error en el reembolso emocional")
+        successful_steps.append("emotional_refund")
 
         return jsonify({"message": f"Obtenido las grabaciones de {user}"}), 200
         
@@ -82,6 +87,8 @@ def book_trip():
             requests.post(f"{MIXING_SERVICE_URL}/cancel", json={"user": user})
         
 
+        if "emotional_refund" in successful_steps:
+            requests.post(f"{EMOTIONAL_REFUND_URL}/erase", json={"user": user})
         return jsonify({"message": f"Revision de letras borradas de {user}."}), 500
 
 if __name__ == '__main__':
