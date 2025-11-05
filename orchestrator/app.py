@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 LYRICS_URL = "http://lyrics-service:5001"
 HOTEL_URL = "http://hotel-service:5002"
-CAR_URL = "http://car-service:5003"
+ANALYTICS_URL = "http://analytics-service:5003"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -31,7 +31,12 @@ def book_trip():
             raise Exception("Error en carro")
         successful_steps.append("car")
 
-        return jsonify({"message": f"Reserva completada para {user}"}), 200
+        #Analytics
+        res = requests.post(f"{ANALYTICS_URL}/get", json={"user": user})
+        if res.status_code != 200:
+            raise Exception("Error en analiticas :()")
+        successful_steps.append("analytics")
+        return jsonify({"message": f"Obtenido las letras de {user}"}), 200
 
     except Exception as e:
         print(f"❌ Error: {e}")
@@ -42,7 +47,9 @@ def book_trip():
             requests.post(f"{HOTEL_URL}/cancel", json={"user": user})
         if "lyrics" in successful_steps:
             requests.post(f"{LYRICS_URL}/erase", json={"user": user})
-        return jsonify({"message": f"Error en la reserva para {user}. Se ejecutaron compensaciones."}), 500
+        if "analytics" in successful_steps:
+            requests.post(f"{ANALYTICS_URL}/roll", json={"user": user})
+        return jsonify({"message": f"Revision de letras borradas de {user}."}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -22,7 +22,7 @@ def escribir_cancion():
     return jsonify({"message": f"Letra creada para {user}", "data": lirica}), 200
 
 @app.route('/erase', methods=['POST'])
-@app.route('/cancel', methods=['POST'])
+
 def borrar_letra():
     data = request.json
     user = data.get('user')
