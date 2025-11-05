@@ -14,7 +14,6 @@ VOCAL_RECORDING_URL = "http://vocal-recording-service:5005"
 @app.route('/music', methods=['POST'])
 def book_trip():
     user = request.json.get('user')
-    track = "track"
     successful_steps = []
 
     try:
@@ -47,10 +46,8 @@ def book_trip():
         if res.status_code != 200:
             raise Exception("Error al entregar la cancion")
         successful_steps.append("digital_relivery")
-            raise Exception("Error en carro")
-        successful_steps.append("car")
 
-        res = requests.post(f"{MASTERING_URL}/write", json={"user": user,"track": track})
+        res = requests.post(f"{MASTERING_URL}/write", json={"user": user})
         if res.status_code != 200:
             raise Exception("Error al masterizar el track mezclado")
         successful_steps.append("mastering")
@@ -79,6 +76,8 @@ def book_trip():
             requests.post(f"{DIGITAL_DELIVERY_URL}/cancel", json={"user": user})
         if "vocal_recording" in successful_steps:
             requests.post(f"{VOCAL_RECORDING_URL}/cancel", json={"user": user})
+        if "mastering" in successful_steps:
+            requests.post(f"{MASTERING_URL}/cancel", json={"user": user})
         return jsonify({"message": f"Revision de letras borradas de {user}."}), 500
 
 if __name__ == '__main__':
