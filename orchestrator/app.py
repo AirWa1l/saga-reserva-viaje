@@ -25,12 +25,6 @@ def book_trip():
             raise Exception("Error en composición musical")
         successful_steps.append("composition")
 
-        # Reservar carro
-        res = requests.post(f"{CAR_URL}/reserve", json={"user": user})
-        if res.status_code != 200:
-            raise Exception("Error en carro")
-        successful_steps.append("car")
-
         #Analytics
         res = requests.post(f"{ANALYTICS_URL}/get", json={"user": user})
         if res.status_code != 200:
@@ -43,8 +37,6 @@ def book_trip():
         print(f"❌ Error: {e}")
         # Compensar pasos exitosos
         if "car" in successful_steps:
-            requests.post(f"{CAR_URL}/cancel", json={"user": user})
-        if "composition" in successful_steps:
             requests.post(f"{COMPOSITION_URL}/cancel", json={"user": user})
         if "lyrics" in successful_steps:
             requests.post(f"{LYRICS_URL}/erase", json={"user": user})

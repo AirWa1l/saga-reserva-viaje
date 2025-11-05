@@ -2,7 +2,6 @@ docker build -t orchestrator:latest ./orchestrator
 docker build -t lyrics-service:latest ./lyrics_service
 docker build -t composition-service:latest ./composition_service  
 docker build -t analytics-service:latest ./analytics_service
-docker build -t hotel-service:latest ./hotel_service
 
 # kubectl apply -f .\k8s.yaml
 # kubectl get pods 
@@ -19,5 +18,5 @@ docker build -t hotel-service:latest ./hotel_service
 # Eliminar imagenes construidas
 # docker rmi lyrics-service:latest
 # docker rmi composition-service:latest
-# docker rmi car-service:latest
+# docker rmi analytics-service:latest
 # docker rmi orchestrator:latest
