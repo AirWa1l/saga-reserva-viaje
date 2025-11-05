@@ -1,42 +1,57 @@
+import requests
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-liricas = []
+voces = []
 
-@app.route('/write', methods=['POST'])
-def escribir_cancion():
+@app.route('/record', methods=['POST'])
+def grabar_voz():
     data = request.json
     user = data.get('user')
-    mood = data.get('mood')
-    theme = data.get('theme')
-    lyrics = data.get('lyrics')
+    tone = data.get('tone')
+    voice = data.get('voice')
 
-    lirica = {
+    grabacion = {
         "user": user,
-        "mood": mood,
-        "theme": theme,
-        "lyrics": lyrics
+        "tone": tone,
+        "voice": voice
     }
-    liricas.append(lirica)
-    return jsonify({"message": f"Letra creada para {user}", "data": lirica}), 200
+    voces.append(grabacion)
+    return jsonify({"message": f"La voz fue grabada para {user}", "data": voces}), 200
 
-@app.route('/erase', methods=['POST'])
 @app.route('/cancel', methods=['POST'])
-def borrar_letra():
+def borrar_grabacion():
     data = request.json
     user = data.get('user')
 
-    for lirica in liricas:
-        if lirica['user'] == user:
-            liricas.remove(lirica)
-            return jsonify({"message": f"Letra eliminada para {user}"}),200
+    for grabacion in voces:
+        if grabacion['user'] == user:
+            voces.remove(grabacion)
+            return jsonify({"message": f"Grabación eliminada para {user}"}),200
 
-    return jsonify({"message": "Letra no encontrada"}), 404
+    return jsonify({"message": "Grabación no encontrada"}), 404
 
-@app.route('/lyrics', methods=['GET'])
-def ver_liricas():
-    return jsonify(liricas), 200
+@app.route('/voices', methods=['GET'])
+def ver_grabaciones():
+    return jsonify(voces), 200
+
+@app.route('/get', methods=['GET'])
+def lyrics_recorded():
+    user = request.args.get('user')
+    try:
+        # Kubernetes resuelve el nombre del servicio automáticamente
+        response = requests.get("http://lyrics-service:5001/lyrics")
+        if response.status_code == 200:
+            liricas = response.json()
+            canciones = str(liricas)
+            mensaje = f"Las canciones cantadas por el usuario {user}son: {canciones}"
+            return jsonify({"message": mensaje}), 200
+        else:
+            return jsonify({"error": "No se pudieron obtener las canciones"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=5005)
+
