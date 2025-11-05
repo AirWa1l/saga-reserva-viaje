@@ -6,7 +6,9 @@ docker build -t delete-service:latest ./delete_service
 docker build -t digital-delivery-service:latest ./digital_delivery_service
 docker build -t vocal-recording-service:latest ./vocal_recording_service
 docker build -t mixing-service:latest ./mixing_service
+docker build -t mastering-service:latest ./mastering_service
 docker build -t emotional-refund-service:latest ./emotional_refund_service
+
 
 # kubectl apply -f .\k8s.yaml
 # kubectl get pods 
@@ -15,6 +17,7 @@ docker build -t emotional-refund-service:latest ./emotional_refund_service
 # Exponer servicio para pruebas con Postman
 # kubectl port-forward svc/lyrics-service 5001:5001
 # kubectl port-forward svc/composition-service 5002:5002
+# kubectl port-forward svc/mastering-service 5010:5010
 
 
 # kubectl delete -f .\k8s.yaml
@@ -29,3 +32,4 @@ docker build -t emotional-refund-service:latest ./emotional_refund_service
 # docker rmi digital-delivery-service:latest
 # docker rmi vocal-recording-service:latest
 # docker rmi mixing-service:latest
+# docker rmi mastering-service:latest
