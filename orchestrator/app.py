@@ -13,6 +13,7 @@ VOCAL_RECORDING_URL = "http://vocal-recording-service:5005"
 MIXING_SERVICE_URL = "http://mixing-service:5007"
 
 EMOTIONAL_REFUND_URL = "http://emotional-refund-service:5004"
+INSPIRATION_URL = "http://inspiration-service:5008"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -71,6 +72,12 @@ def book_trip():
             raise Exception("Error en el reembolso emocional")
         successful_steps.append("emotional_refund")
 
+        # Obtener inspiración
+        res = requests.post(f"{INSPIRATION_URL}/reserve", json={"user": user})
+        if res.status_code != 200:
+            raise Exception("Obtener inspiración fallida")
+        successful_steps.append("inspiration") 
+
         return jsonify({"message": f"Obtenido las grabaciones de {user}"}), 200
         
 
@@ -97,6 +104,8 @@ def book_trip():
             requests.post(f"{MASTERING_URL}/cancel", json={"user": user})
         if "emotional_refund" in successful_steps:
             requests.post(f"{EMOTIONAL_REFUND_URL}/erase", json={"user": user})
+        if "inspiration" in successful_steps:
+            requests.post(f"{INSPIRATION_URL}/cancel", json={"user": user})
         return jsonify({"message": f"Revision de letras borradas de {user}."}), 500
 
 if __name__ == '__main__':

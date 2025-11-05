@@ -8,6 +8,7 @@ docker build -t vocal-recording-service:latest ./vocal_recording_service
 docker build -t mixing-service:latest ./mixing_service
 docker build -t mastering-service:latest ./mastering_service
 docker build -t emotional-refund-service:latest ./emotional_refund_service
+docker build -t inspiration-service:latest ./inspiration_service
 
 
 # kubectl apply -f .\k8s.yaml
@@ -31,5 +32,10 @@ docker build -t emotional-refund-service:latest ./emotional_refund_service
 # docker rmi delete-service:latest
 # docker rmi digital-delivery-service:latest
 # docker rmi vocal-recording-service:latest
+<<<<<<< HEAD
+# docker rmi emotional-refund-service:latest
+# docker rmi inspiration-service:latest
+=======
 # docker rmi mixing-service:latest
 # docker rmi mastering-service:latest
+>>>>>>> develop
