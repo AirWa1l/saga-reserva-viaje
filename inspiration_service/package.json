@@ -1,12 +1,13 @@
 {
-    "name": "hotel_service",
+    "name": "inspiration-service",
     "version": "1.0.0",
-    "description": "Microservicio de hotel para Saga",
+    "description": "Microservicio de inspiracion para saga",
     "main": "app.js",
     "scripts": {
       "start": "node app.js"
     },
     "dependencies": {
+      "axios": "^1.5.0",
       "body-parser": "^1.20.2",
       "express": "^4.18.2"
     }
