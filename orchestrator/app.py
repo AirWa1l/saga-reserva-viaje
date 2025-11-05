@@ -6,6 +6,7 @@ app = Flask(__name__)
 LYRICS_URL = "http://lyrics-service:5001"
 COMPOSITION_URL = "http://composition-service:5002" 
 CAR_URL = "http://car-service:5003"
+DELETE_URL = "http://delete-service:5006"
 
 @app.route('/music', methods=['POST'])
 def book_trip():
@@ -31,6 +32,12 @@ def book_trip():
             raise Exception("Error en carro")
         successful_steps.append("car")
 
+        # Eliminar canción 
+        res = requests.post(f"{DELETE_URL}/delete", json={"user": user})
+        if res.status_code != 200:
+            raise Exception("Error en eliminación de canción")
+        successful_steps.append("delete")
+
         return jsonify({"message": f"Canción completada para {user}"}), 200
 
     except Exception as e:
@@ -42,6 +49,8 @@ def book_trip():
             requests.post(f"{COMPOSITION_URL}/cancel", json={"user": user})
         if "lyrics" in successful_steps:
             requests.post(f"{LYRICS_URL}/erase", json={"user": user})
+        if "delete" in successful_steps:
+            requests.post(f"{DELETE_URL}/delete", json={"user": user})
         return jsonify({"message": f"Error en la creación de canción para {user}. Se ejecutaron compensaciones."}), 500
 
 if __name__ == '__main__':
