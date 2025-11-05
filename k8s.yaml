@@ -68,31 +68,31 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: car-service
+  name: analytics-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: car-service
+      app: analytics-service
   template:
     metadata:
       labels:
-        app: car-service
+        app: analytics-service
     spec:
       containers:
-        - name: car-service
-          image: car-service:latest
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 5003
+      - name: analytics-service
+        image: analytics-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5003
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: car-service
+  name: analytics-service
 spec:
   selector:
-    app: car-service
+    app: analytics-service
   ports:
     - protocol: TCP
       port: 5003
