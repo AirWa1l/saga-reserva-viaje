@@ -1,5 +1,9 @@
 docker build -t orchestrator:latest ./orchestrator
 docker build -t lyrics-service:latest ./lyrics_service
+docker build -t composition-service:latest ./composition_service  
+docker build -t analytics-service:latest ./analytics_service
+docker build -t delete-service:latest ./delete_service
+docker build -t digital-delivery-service:latest ./digital_delivery_service
 docker build -t hotel-service:latest ./hotel_service
 docker build -t car-service:latest ./car_service
 docker build -t mastering-service:latest ./mastering_service
@@ -14,12 +18,17 @@ docker build -t mastering-service:latest ./mastering_service
 # kubectl port-forward svc/composition-service 5002:5002
 # kubectl port-forward svc/mastering-service 5010:5010
 
+
 # kubectl delete -f .\k8s.yaml
 # kubectl get all
 
 # Eliminar imagenes construidas
 # docker rmi lyrics-service:latest
+# docker rmi composition-service:latest
+# docker rmi analytics-service:latest
 # docker rmi mastering-service:latest
 # docker rmi hotel-service:latest
 # docker rmi car-service:latest
 # docker rmi orchestrator:latest
+# docker rmi delete-service:latest
+# docker rmi digital-delivery-service:latest
